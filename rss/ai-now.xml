@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+  <channel>
+    <title>AI-Now</title>
+    <link>https://v2u.us</link>
+    <description>AI-Now brings you the latest in tech, stripped down to what really matters. Join us weekly as we cut through the noise in conversations, podcasts, seminars, and publications, breaking down complex tech topics into layman's terms. Understand the trends shaping our world and what they mean for you. Tune in and get empowered with AI-Now. Also available on our channel #AI-Now</description>
+    <item>
+      <title>Article Title</title>
+      <link>https://yourwebsite.com/article</link>
+      <description>Summary of the article</description>
+      <pubDate>Tue, 27 May 2025 17:38:00 GMT</pubDate>
+    </item>
+  </channel>
+</rss>
