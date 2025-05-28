@@ -1,32 +1,27 @@
-# AI-Now
-A dynamically updating industry site for entertainment and educational content
+# SafeShipping
 
-Each day, Site updates with top AI News site and content creator channels like YouTube everyday and accumulates content for analysis and order precidence.
+SafeShipping is a blockchain-based logistics platform using smart contracts, decentralized oracles, and IoT integrations to automate, secure, and verify global shipping workflows.
 
-Every 30 days (End-of-the-month) content is refined and summarized into compact form for,
- eBook subscription model
- premium podcast status oversight
- premium newest enties into AI products
- premium insight into new opportunity segments and services
- premium insight into automation tools
- premium insight into agent tooling
- premium insight into video editing and production tools
- premium insight into phot and image editing and creation tools
- premium insight into AI analytics tools
+## Project Structure
 
-Every 30 days update all our digital resources
+This repository contains a comprehensive directory structure for developing and deploying the SafeShipping platform. For detailed information about the directory structure, please refer to the [directory_structure.md](./directory_structure.md) file.
 
-Every 30 days compile metics for visuals,
- month on month
- Year to day
- year on year
- forcast new trajectories for,
- end-of-year
- year forward
- 5 years forward
+## Key Components
 
-Start having best in class evaluations of product and services
+- **Smart Contracts**: Blockchain contracts for secure, transparent shipping workflows
+- **Backend API**: Server-side application for business logic and data management
+- **Frontend Application**: User interface for interacting with the platform
+- **IoT Integration**: Components for connecting with IoT devices and sensors
+- **Oracle Services**: Decentralized data feeds connecting smart contracts with external data
+- **Documentation**: Comprehensive guides for developers and users
 
+## Getting Started
 
+1. Clone this repository
+2. Review the directory structure documentation
+3. Set up the development environment using Docker
+4. Begin implementing components based on the provided structure
 
+## License
 
+This project is licensed under the GPL-3.0 License - see the [LICENSE](./LICENSE) file for details.
