@@ -3,9 +3,24 @@
 ROOT_DIR="./product/guides"
 SOURCE_DIR="$ROOT_DIR/source"
 PUBLISH_DIR="$ROOT_DIR/publish"
-TEMPLATE="$ROOT_DIR/v2u_template.docx"
+TEMPLATE="$ROOT_DIR/v2u_template.dotx"
+
 VERSION="1.0"
 TODAY=$(date +%F)
+
+# Build number tracker
+BUILD_META="$ROOT_DIR/build.meta"
+if [ ! -f "$BUILD_META" ]; then echo "0" > "$BUILD_META"; fi
+BUILD_NUM=$(($(cat "$BUILD_META") + 1))
+echo "$BUILD_NUM" > "$BUILD_META"
+BUILD_TAG="Build-$(printf "%04d" $BUILD_NUM)"
+
+# Initialize manifest and changelog
+MANIFEST="$ROOT_DIR/manifest.csv"
+CHANGELOG="$ROOT_DIR/build.log"
+
+echo "AppName,Version,Build,Date,Output_DOCX,Output_PDF,Output_ZIP" > "$MANIFEST"
+echo "🔨 $TODAY — $BUILD_TAG: Exported Markdown guides to DOCX+PDF+ZIP" >> "$CHANGELOG"
 
 mkdir -p "$PUBLISH_DIR"
 
@@ -20,41 +35,44 @@ for filepath in "$SOURCE_DIR"/*.md; do
     # Convert to PDF
     pandoc "$filepath" -o "$temp_dir/${filename}.pdf" --pdf-engine=xelatex
 
-    # Generate dynamic README.txt
+    # Generate dynamic README
     cat <<EOF > "$temp_dir/README.txt"
 # Mastering ${filename//_/ } Guide
 Version: $VERSION
+Build: $BUILD_TAG
 Date: $TODAY
 
 This package includes:
 - ${filename}.docx
 - ${filename}.pdf
-- README.txt (this file)
+- README.txt
 
 ---
 
-## Licensing & Use
+## Licensing
 
-🟢 STANDARD EDITION
+🟢 Standard Edition
 - Personal or internal team use
 - Redistribution prohibited
-- Resale not permitted
+- No resale rights
 
-🟣 PREMIUM EDITION
-- Editable templates
+🟣 Premium Edition
+- Editable templates included
 - Lifetime updates
-- Use in paid client projects
+- May be used in client projects (non-resale)
 
-> For commercial licensing or team bundles, contact: support@v2u.us
-
----
+> To upgrade or get licensing: support@v2u.us
 
 © $TODAY v2u. All rights reserved.
 EOF
 
-    # Zip contents
+    # Create ZIP
     (cd "$temp_dir" && zip -r "../${filename}.zip" .)
-    echo "📦 Packaged: ${filename}.zip"
+
+    # Update manifest
+    echo "${filename},$VERSION,$BUILD_TAG,$TODAY,${filename}.docx,${filename}.pdf,${filename}.zip" >> "$MANIFEST"
+
+    echo "✅ Completed: ${filename} → .docx/.pdf/.zip"
 done
 
 # Generate checksum log
@@ -62,4 +80,4 @@ cd "$PUBLISH_DIR" || exit
 sha256sum *.zip > ../checksums.txt
 cd - >/dev/null
 
-echo "✅ All guides exported, versioned, and zipped with README + checksum log."
+echo "📋 All exports built, tracked, zipped, and checksummed for $BUILD_TAG."
