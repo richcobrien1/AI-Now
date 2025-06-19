@@ -1,5 +1,12 @@
 #!/bin/bash
 
+PDF_META=(--metadata mainfont="Symbola" --metadata emoji=true)
+PDF_METADATA=(
+  --metadata=mainfont="Symbola"
+  --metadata=emoji=true
+  --pdf-engine=xelatex
+)
+
 APP_NAME="$1"
 VERSION="1.0"
 TODAY=$(date +%F)
@@ -25,7 +32,7 @@ BUILD_TAG="Build-$(printf "%04d" $BUILD_NUM)"
 
 # Convert
 pandoc "$SOURCE" -o "$PUBLISH/Mastering_${APP_NAME}.docx" --reference-doc="$TEMPLATE"
-pandoc "$SOURCE" -o "$PUBLISH/Mastering_${APP_NAME}.pdf" --pdf-engine=xelatex
+pandoc "$SOURCE" -o "$PUBLISH/Mastering_${APP_NAME}.pdf" "${PDF_METADATA[@]}"
 
 # Regenerate README
 cat <<EOF > "$README"

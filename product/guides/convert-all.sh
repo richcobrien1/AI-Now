@@ -1,7 +1,19 @@
 #!/bin/bash
 
+PDF_META=(--metadata mainfont="Symbola" --metadata emoji=true)
+PDF_METADATA=(
+  --metadata=mainfont="Symbola"
+  --metadata=emoji=true
+  --pdf-engine=xelatex
+)
+
+# Add this to top of script
+SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
+
+# Then set source path like this:
+SOURCE_DIR="$SCRIPT_DIR/source"
+
 ROOT_DIR="./product/guides"
-SOURCE_DIR="$ROOT_DIR/source"
 PUBLISH_DIR="$ROOT_DIR/publish"
 TEMPLATE="$ROOT_DIR/v2u_template.dotx"
 
@@ -24,6 +36,14 @@ echo "🔨 $TODAY — $BUILD_TAG: Exported Markdown guides to DOCX+PDF+ZIP" >> "
 
 mkdir -p "$PUBLISH_DIR"
 
+shopt -s nullglob  # Enables empty glob evaluation
+
+md_files=("$SOURCE_DIR"/*.md)
+if [ ${#md_files[@]} -eq 0 ]; then
+  echo "⚠️  No .md files found in $SOURCE_DIR"
+  exit 1
+fi
+
 for filepath in "$SOURCE_DIR"/*.md; do
     filename=$(basename "$filepath" .md)
     temp_dir="$PUBLISH_DIR/$filename"
@@ -33,7 +53,7 @@ for filepath in "$SOURCE_DIR"/*.md; do
     pandoc "$filepath" -o "$temp_dir/${filename}.docx" --reference-doc="$TEMPLATE"
 
     # Convert to PDF
-    pandoc "$filepath" -o "$temp_dir/${filename}.pdf" --pdf-engine=xelatex
+    pandoc "$filepath" -o "$temp_dir/${filename}.pdf" "${PDF_METADATA[@]}"
 
     # Generate dynamic README
     cat <<EOF > "$temp_dir/README.txt"
